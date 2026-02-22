@@ -1,2 +1,19 @@
 .DS_Store
 *.zip
+node_modules/
+.output/
+.wxt/
+
+# Extensions
+.VSCodeCounter/
+
+# Editor
+.cursor/
+
+# Env
+.env
+.env.development
+.env.local
+
+# Misc.
+CLAUDE.md

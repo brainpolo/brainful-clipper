@@ -1,0 +1,223 @@
+@import "tailwindcss";
+
+/* ── Custom theme ──────────────────────────────────────────────────── */
+@theme {
+  --font-family-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  --radius-DEFAULT: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+
+  /* Brand palette (indigo) */
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+
+  /* Card shadows */
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow-card-hover: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+}
+
+/* ── Animations ────────────────────────────────────────────────────── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.9); }
+}
+@keyframes progress {
+  0% { width: 0%; }
+  20% { width: 30%; }
+  50% { width: 60%; }
+  80% { width: 85%; }
+  100% { width: 95%; }
+}
+@keyframes stroke {
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes viewEnter {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes cardSlideIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes toastSlideUp {
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes dropPulse {
+  0%, 100% { border-color: var(--color-brand-400); }
+  50% { border-color: var(--color-brand-600); }
+}
+
+.animate-slide-in { animation: slideIn 0.25s ease; }
+.animate-fade-out, .fade-out { animation: fadeOut 0.3s ease forwards; }
+.animate-progress { animation: progress 1.5s ease-in-out forwards; }
+
+.view-enter { animation: viewEnter 0.2s ease-out; }
+
+.checkmark-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+.checkmark-check {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.4s forwards;
+}
+
+/* Staggered card entrance */
+.clip-card {
+  animation: cardSlideIn 0.15s ease-out both;
+}
+.clip-card:nth-child(1) { animation-delay: 0ms; }
+.clip-card:nth-child(2) { animation-delay: 30ms; }
+.clip-card:nth-child(3) { animation-delay: 60ms; }
+.clip-card:nth-child(4) { animation-delay: 90ms; }
+.clip-card:nth-child(5) { animation-delay: 120ms; }
+
+/* ── Progress bar ──────────────────────────────────────────────────── */
+#progressBar.active .progress-bar-fill {
+  animation: progress 1.5s ease-in-out forwards;
+}
+#progressBar.complete .progress-bar-fill {
+  width: 100%;
+  transition: width 0.2s ease-out;
+}
+
+/* ── View switching ────────────────────────────────────────────────── */
+.view.hidden { display: none !important; }
+
+/* ── Drop zone feedback ────────────────────────────────────────────── */
+#dropZone.drag-over,
+#clipDropZone.drag-over {
+  border-color: var(--color-brand-500);
+  background-color: color-mix(in srgb, var(--color-brand-500) 6%, transparent);
+  animation: dropPulse 1.5s ease-in-out infinite;
+  transform: scale(1.01);
+}
+
+/* ── Toast ─────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  animation: toastSlideUp 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.toast-error {
+  background: rgba(254, 226, 226, 0.9);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.15);
+}
+.toast-info {
+  background: rgba(224, 231, 255, 0.9);
+  color: var(--color-brand-600);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+.toast-success {
+  background: rgba(209, 250, 229, 0.9);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+.toast-loading {
+  background: rgba(219, 234, 254, 0.9);
+  color: #2563eb;
+  border: 1px solid rgba(59, 130, 246, 0.15);
+}
+.toast-warning {
+  background: rgba(254, 243, 199, 0.9);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .toast-error {
+    background: rgba(69, 10, 10, 0.9);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+  .toast-info {
+    background: rgba(30, 58, 95, 0.9);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+  }
+  .toast-success {
+    background: rgba(5, 46, 22, 0.9);
+    color: #86efac;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+  .toast-loading {
+    background: rgba(23, 37, 84, 0.9);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+  .toast-warning {
+    background: rgba(69, 26, 3, 0.9);
+    color: #fcd34d;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+}
+
+/* ── Tab bar ──────────────────────────────────────────────────────── */
+.tab-btn {
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 9999px;
+  color: #6b7280;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.tab-btn:hover {
+  color: #374151;
+  background: rgba(0, 0, 0, 0.04);
+}
+.tab-btn-active {
+  color: var(--color-brand-600);
+  background: color-mix(in srgb, var(--color-brand-500) 10%, transparent);
+}
+.tab-btn-active:hover {
+  color: var(--color-brand-600);
+  background: color-mix(in srgb, var(--color-brand-500) 10%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  .tab-btn {
+    color: #9ca3af;
+  }
+  .tab-btn:hover {
+    color: #d1d5db;
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .tab-btn-active {
+    color: var(--color-brand-400);
+    background: color-mix(in srgb, var(--color-brand-500) 15%, transparent);
+  }
+  .tab-btn-active:hover {
+    color: var(--color-brand-400);
+    background: color-mix(in srgb, var(--color-brand-500) 15%, transparent);
+  }
+}
+
+/* ── Anti-aliasing ─────────────────────────────────────────────────── */
+body {
+  -webkit-font-smoothing: antialiased;
+}
